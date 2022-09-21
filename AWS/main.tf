@@ -32,3 +32,28 @@ resource "aws_s3_bucket_public_access_block" "s3_block" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+data "archive_file" "zip" {
+  type        = "zip"
+  source_file = "src/lambda.py"
+  output_path = "lambda.zip"
+}
+
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    sid    = ""
+    effect = "Allow"
+
+    principals {
+      identifiers = ["lambda.amazonaws.com"]
+      type        = "Service"
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "lambda_role" {
+  name               = "lambda_role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_policy.json
+}
