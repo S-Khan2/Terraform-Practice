@@ -57,3 +57,14 @@ resource "aws_iam_role" "lambda_role" {
   name               = "lambda_role"
   assume_role_policy = data.aws_iam_policy_document.lambda_policy.json
 }
+
+resource "aws_lambda_function" "lambda" {
+  function_name = "basic_lambda"
+
+  filename         = data.archive_file.zip.output_path
+  source_code_hash = data.archive_file.zip.output_base64sha256
+
+  role    = aws_iam_role.lambda_role.arn
+  handler = "lambda.lambda_handler"
+  runtime = "python3.8"
+}
