@@ -60,22 +60,6 @@ resource "aws_iam_role" "lambda_role" {
   assume_role_policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
-data "aws_iam_policy_document" "function_logging_policy" {
-  statement {
-    effect = "Allow"
-    principals {
-      identifiers = ["cloudwatch.amazonaws.com"]
-      type        = "Service"
-    }
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      "arn:aws:logs:*:*:*"
-    ]
-  }
-}
 
 resource "aws_iam_policy" "function_logging_policy" {
   name = "function-logging-policy"
