@@ -1,4 +1,4 @@
-# Provider = local, Resourse = file, RequiredField = filename
+# Provider = local, Resource = file, RequiredField = filename
 
 resource "local_file" "pet" {
   filename = "./local_pets.txt"
