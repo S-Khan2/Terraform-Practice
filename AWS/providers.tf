@@ -1,4 +1,10 @@
 terraform {
+  # Where to store the Terraform state file
+  backend "s3" {
+    bucket = "sk-backend"
+    key    = "practice/terraform.tfstate"
+    region = "eu-west-2"
+  }
   # Where are the resources that we will be managing?
   required_providers {
     aws = {
@@ -15,4 +21,14 @@ provider "aws" {
   profile = "terraform-profile"
   # Set the default region to London: eu-west-2
   region = "eu-west-2"
+
+  default_tags {
+    tags = {
+      project = "sk-practice"
+    }
+  }
+}
+
+module "lambda" {
+  source = "./lambda"
 }
